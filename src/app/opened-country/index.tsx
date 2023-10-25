@@ -22,77 +22,86 @@ type props = {
 export default function OpenedCountryView({ country, onClickBack }: props) {
     const [isClosest, setIsClosest] = useState(true);
 
-    const label = isClosest ? "Closest" : "Furthest";
-
     return (
-        <>
+        <div className={clsx("flex flex-col items-center")}>
             <button onClick={onClickBack}>⬅ Back</button>
             <h1>Data for {country}</h1>
-            <p>Overall score: {(allScores[country][1] * 100).toFixed(2)}%</p>
             <p>
                 Reverse: <input type="checkbox" checked={!isClosest} onChange={() => setIsClosest(v => !v)} />
             </p>
 
-            <h2>{label} countries by responses overall</h2>
             <ClosestFurthest from={country} topic="all" isClosest={isClosest} />
-
-            <h2>{label} countries by responses to discrimination questions</h2>
             <ClosestFurthest from={country} topic="discrimination" isClosest={isClosest} />
-
-            <h2>{label} countries by responses to public questions</h2>
             <ClosestFurthest from={country} topic="public" isClosest={isClosest} />
-
-            <h2>{label} countries by responses to rights questions</h2>
             <ClosestFurthest from={country} topic="rights" isClosest={isClosest} />
-
-            <h2>{label} countries by responses to safety questions</h2>
             <ClosestFurthest from={country} topic="safety" isClosest={isClosest} />
-        </>
+        </div>
     );
 }
 
 function ClosestFurthest({ from, topic, isClosest }: { from: CountryName; topic: string; isClosest: boolean }) {
-    const [list, scores] = getData(topic);
+    const [title, list, scores] = getData(topic);
 
     const neighbours = list[from] as CountryName[];
     const closestList = isClosest ? neighbours.slice(0, 5) : neighbours.slice(-6, -1).reverse();
+    const label = isClosest ? "Closest" : "Furthest";
+
+    const rawScore = (scores[from][1] + 1) / 2;
 
     function getScore(country: CountryName) {
         return ((100 * (scores[country][1] + 1)) / 2).toFixed(2);
     }
 
     return (
-        <ol className={clsx("flex gap-1")}>
-            {closestList.map(country => (
-                <li
-                    className={clsx(
-                        "flex flex-col items-center justify-center",
-                        "w-24 h-28",
-                        "border rounded-md",
-                        "bg-blue-50"
-                    )}
-                >
-                    <Country name={country} xFlag={["text-6xl"]} xName={["text-xs uppercase"]} />
-                    <span>{getScore(country)}%</span>
-                </li>
-            ))}
-        </ol>
+        <details open={topic === "all"} className={clsx("w-[32rem]", "border-t")}>
+            <summary className={clsx("flex gap-2 justify-between", "py-2", "cursor-pointer")}>
+                <h2 className={clsx("uppercase", "text-neutral-600", "px-2")}>{title}</h2>
+                <span className={clsx(scoreStyle(rawScore), "px-3 w-20 rounded-full", "text-center")}>
+                    {getScore(from)}%
+                </span>
+            </summary>
+            <span className={clsx("px-2", "text-xs text-neutral-400")}>{label} countries by survey responses</span>
+            <ol className={clsx("flex justify-center gap-1", "pb-2")}>
+                {closestList.map(country => (
+                    <li
+                        key={country}
+                        className={clsx(
+                            "flex flex-col items-center justify-center",
+                            "w-24 h-28",
+                            "border rounded-md",
+                            "bg-blue-50"
+                        )}
+                    >
+                        <Country name={country} xFlag={["text-6xl"]} xName={["text-xs uppercase"]} />
+                        <span>{getScore(country)}%</span>
+                    </li>
+                ))}
+            </ol>
+        </details>
     );
 }
 
 function getData(topic: string) {
     switch (topic) {
         case "all":
-            return [allListed, allScores] as const;
+            return ["Overall", allListed, allScores] as const;
         case "discrimination":
-            return [discrimListed, discrimScores] as const;
+            return ["Discrimination", discrimListed, discrimScores] as const;
         case "public":
-            return [publicListed, publicScores] as const;
+            return ["Public", publicListed, publicScores] as const;
         case "rights":
-            return [rightsListed, rightsScores] as const;
+            return ["Legal Rights", rightsListed, rightsScores] as const;
         case "safety":
-            return [safetyListed, safetyScores] as const;
+            return ["Safety", safetyListed, safetyScores] as const;
         default:
             return {} as never;
     }
+}
+
+function scoreStyle(score: number) {
+    if (score >= 0.8) return "bg-green-500 text-white";
+    if (score >= 0.6) return "bg-green-100 text-green-900";
+    if (score >= 0.4) return "bg-neutral-100 text-neutral-900";
+    if (score >= 0.2) return "bg-red-100 text-red-900";
+    return "bg-red-500 text-white";
 }
