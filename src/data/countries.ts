@@ -14,7 +14,7 @@ export const COUNTRIES = [
     "Romania",   "Slovakia",
     "Slovenia",  "Spain",
     "Sweden",    "United Kingdom"
-];
+] as const;
 
 // prettier-ignore
 export const FLAGS: Record<string, string> = {
@@ -33,3 +33,5 @@ export const FLAGS: Record<string, string> = {
     "Slovenia": "🇸🇮",  "Spain": "🇪🇸",
     "Sweden": "🇸🇪",    "United Kingdom": "🇬🇧",
 };
+
+export type CountryName = (typeof COUNTRIES)[number];

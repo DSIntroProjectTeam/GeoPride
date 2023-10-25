@@ -1,21 +1,29 @@
-import clsx from "clsx";
-import _ from "lodash";
+import { useState } from "react";
 
-import countries from "#/data/flags";
+import CountryListView from "./country-list";
+import { CountryName } from "#/data/countries";
+import OpenedCountryView from "./opened-country";
 
 export default function App() {
-    return (
-        <>
-            <div className="flex flex-col gap-2">
-                {_(countries)
-                    .entries()
-                    .map(([name, flag]) => (
-                        <button key={flag}>
-                            {flag} {name}
-                        </button>
-                    ))
-                    .value()}
-            </div>
-        </>
-    );
+    type ViewId = "country-list" | "opened-country";
+
+    const [view, setView] = useState<ViewId>("country-list");
+    const [selectedCountry, selectCountry] = useState<CountryName>();
+
+    function onSelectCountry(country: CountryName) {
+        selectCountry(country);
+        setView("opened-country");
+    }
+
+    function onDeselectCountry() {
+        selectCountry(undefined);
+        setView("country-list");
+    }
+
+    switch (view) {
+        case "country-list":
+            return <CountryListView onSelectCountry={onSelectCountry} />;
+        case "opened-country":
+            return <OpenedCountryView onClickBack={onDeselectCountry} country={selectedCountry!} />;
+    }
 }
