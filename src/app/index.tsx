@@ -1,3 +1,4 @@
+import clsx from "clsx";
 import _ from "lodash";
 
 const COUNTRIES = {
@@ -34,14 +35,16 @@ const COUNTRIES = {
 export default function App() {
     return (
         <>
-            {_(COUNTRIES)
-                .entries()
-                .map(([name, flag]) => (
-                    <button key={flag}>
-                        {flag} {name}
-                    </button>
-                ))
-                .value()}
+            <div className="flex flex-col gap-2">
+                {_(COUNTRIES)
+                    .entries()
+                    .map(([name, flag]) => (
+                        <button key={flag}>
+                            {flag} {name}
+                        </button>
+                    ))
+                    .value()}
+            </div>
         </>
     );
 }
