@@ -12,6 +12,7 @@ import rightsScores from "#/data/scores/scores_rights.json";
 import safetyListed from "#/data/vecs/safety.listed.json";
 import safetyScores from "#/data/scores/scores_safety.json";
 import { useState } from "react";
+import clsx from "clsx";
 
 type props = {
     country: CountryName;
@@ -20,11 +21,6 @@ type props = {
 
 export default function OpenedCountryView({ country, onClickBack }: props) {
     const [isClosest, setIsClosest] = useState(true);
-
-    function pick(values: any) {
-        const arr = values[country] as CountryName[];
-        return isClosest ? arr.slice(0, 5) : arr.slice(-6, -1).reverse();
-    }
 
     const label = isClosest ? "Closest" : "Furthest";
 
@@ -36,67 +32,67 @@ export default function OpenedCountryView({ country, onClickBack }: props) {
             <p>
                 Reverse: <input type="checkbox" checked={!isClosest} onChange={() => setIsClosest(v => !v)} />
             </p>
+
             <h2>{label} countries by responses overall</h2>
-            <ol>
-                {pick(allListed).map(closeCountry => (
-                    <li>
-                        <Country name={closeCountry} />
-                        <span>(score: {(allScores[closeCountry][1] * 100).toFixed(2)}%)</span>
-                    </li>
-                ))}
-            </ol>
+            <ClosestFurthest from={country} topic="all" isClosest={isClosest} />
+
             <h2>{label} countries by responses to discrimination questions</h2>
-            <span>
-                (<Country name={country} />
-                <span>Own score: {(discrimScores[country][1] * 100).toFixed(2)}%</span>)
-            </span>
-            <ol>
-                {pick(discrimListed).map(closeCountry => (
-                    <li>
-                        <Country name={closeCountry} />
-                        <span>(score: {(discrimScores[closeCountry][1] * 100).toFixed(2)}%)</span>
-                    </li>
-                ))}
-            </ol>
+            <ClosestFurthest from={country} topic="discrimination" isClosest={isClosest} />
+
             <h2>{label} countries by responses to public questions</h2>
-            <span>
-                (<Country name={country} />
-                <span>Own score: {(publicScores[country][1] * 100).toFixed(2)}%</span>)
-            </span>
-            <ol>
-                {pick(publicListed).map(closeCountry => (
-                    <li>
-                        <Country name={closeCountry} />
-                        <span>(score: {(publicScores[closeCountry][1] * 100).toFixed(2)}%)</span>
-                    </li>
-                ))}
-            </ol>
+            <ClosestFurthest from={country} topic="public" isClosest={isClosest} />
+
             <h2>{label} countries by responses to rights questions</h2>
-            <span>
-                (<Country name={country} />
-                <span>Own score: {(rightsScores[country][1] * 100).toFixed(2)}%</span>)
-            </span>
-            <ol>
-                {pick(rightsListed).map(closeCountry => (
-                    <li>
-                        <Country name={closeCountry} />
-                        <span>(score: {(rightsScores[closeCountry][1] * 100).toFixed(2)}%)</span>
-                    </li>
-                ))}
-            </ol>
+            <ClosestFurthest from={country} topic="rights" isClosest={isClosest} />
+
             <h2>{label} countries by responses to safety questions</h2>
-            <span>
-                (<Country name={country} />
-                <span>Own score: {(safetyScores[country][1] * 100).toFixed(2)}%</span>)
-            </span>
-            <ol>
-                {pick(safetyListed).map(closeCountry => (
-                    <li>
-                        <Country name={closeCountry} />
-                        <span>(score: {(safetyScores[closeCountry][1] * 100).toFixed(2)}%)</span>
-                    </li>
-                ))}
-            </ol>
+            <ClosestFurthest from={country} topic="safety" isClosest={isClosest} />
         </>
     );
+}
+
+function ClosestFurthest({ from, topic, isClosest }: { from: CountryName; topic: string; isClosest: boolean }) {
+    const [list, scores] = getData(topic);
+
+    const neighbours = list[from] as CountryName[];
+    const closestList = isClosest ? neighbours.slice(0, 5) : neighbours.slice(-6, -1).reverse();
+
+    function getScore(country: CountryName) {
+        return ((100 * (scores[country][1] + 1)) / 2).toFixed(2);
+    }
+
+    return (
+        <ol className={clsx("flex gap-1")}>
+            {closestList.map(country => (
+                <li
+                    className={clsx(
+                        "flex flex-col items-center justify-center",
+                        "w-24 h-28",
+                        "border rounded-md",
+                        "bg-blue-50"
+                    )}
+                >
+                    <Country name={country} xFlag={["text-6xl"]} xName={["text-xs uppercase"]} />
+                    <span>{getScore(country)}%</span>
+                </li>
+            ))}
+        </ol>
+    );
+}
+
+function getData(topic: string) {
+    switch (topic) {
+        case "all":
+            return [allListed, allScores] as const;
+        case "discrimination":
+            return [discrimListed, discrimScores] as const;
+        case "public":
+            return [publicListed, publicScores] as const;
+        case "rights":
+            return [rightsListed, rightsScores] as const;
+        case "safety":
+            return [safetyListed, safetyScores] as const;
+        default:
+            return {} as never;
+    }
 }

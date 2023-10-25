@@ -1,15 +1,27 @@
 import { FLAGS } from "#/data/countries";
+import clsx, { ClassValue } from "clsx";
 
-export default function Country({ name, reverse = false }: { name: string; reverse?: boolean }) {
+export default function Country({
+    name,
+    reverse = false,
+    xName,
+    xFlag,
+}: {
+    name: string;
+    reverse?: boolean;
+    xName?: ClassValue[];
+    xFlag?: ClassValue[];
+}) {
+    const displayName = name === "United Kingdom" ? "UK" : name;
     return reverse ? (
         <>
-            <span>{name}</span>
-            <span>{FLAGS[name]}</span>
+            <span className={clsx(xName)}>{displayName}</span>
+            <span className={clsx(xFlag)}>{FLAGS[name]}</span>
         </>
     ) : (
         <>
-            <span>{FLAGS[name]}</span>
-            <span>{name}</span>
+            <span className={clsx(xFlag)}>{FLAGS[name]}</span>
+            <span className={clsx(xName)}>{displayName}</span>
         </>
     );
 }
