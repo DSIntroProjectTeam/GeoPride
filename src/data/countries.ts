@@ -18,7 +18,7 @@ export const COUNTRIES = [
 
 // prettier-ignore
 export const FLAGS: Record<string, string> = {
-    "Austria": "🇦🇺",   "Belgium": "🇧🇪",
+    "Austria": "🇦🇹",   "Belgium": "🇧🇪",
     "Bulgaria": "🇧🇬",  "Croatia": "🇭🇷",
     "Cyprus": "🇨🇾",    "Czechia": "🇨🇿",
     "Denmark": "🇩🇰",   "Estonia": "🇪🇪",
