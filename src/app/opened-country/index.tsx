@@ -11,6 +11,7 @@ import rightsListed from "#/data/vecs/rights.listed.json";
 import rightsScores from "#/data/scores/scores_rights.json";
 import safetyListed from "#/data/vecs/safety.listed.json";
 import safetyScores from "#/data/scores/scores_safety.json";
+import { useState } from "react";
 
 type props = {
     country: CountryName;
@@ -18,50 +19,78 @@ type props = {
 };
 
 export default function OpenedCountryView({ country, onClickBack }: props) {
+    const [isClosest, setIsClosest] = useState(true);
+
+    function pick(values: any) {
+        const arr = values[country] as CountryName[];
+        return isClosest ? arr.slice(0, 5) : arr.slice(-6, -1).reverse();
+    }
+
+    const label = isClosest ? "Closest" : "Furthest";
+
     return (
         <>
             <button onClick={onClickBack}>⬅ Back</button>
             <h1>Data for {country}</h1>
             <p>Overall score: {(allScores[country][1] * 100).toFixed(2)}%</p>
-            <h2>Overall closest countries by responses</h2>
+            <p>
+                Reverse: <input type="checkbox" checked={!isClosest} onChange={() => setIsClosest(v => !v)} />
+            </p>
+            <h2>{label} countries by responses overall</h2>
             <ol>
-                {(allListed[country] as CountryName[]).slice(0, 5).map(closeCountry => (
+                {pick(allListed).map(closeCountry => (
                     <li>
                         <Country name={closeCountry} />
                         <span>(score: {(allScores[closeCountry][1] * 100).toFixed(2)}%)</span>
                     </li>
                 ))}
             </ol>
-            <h2>Closest countries by responses to discrimination questions</h2>
+            <h2>{label} countries by responses to discrimination questions</h2>
+            <span>
+                (<Country name={country} />
+                <span>Own score: {(discrimScores[country][1] * 100).toFixed(2)}%</span>)
+            </span>
             <ol>
-                {(discrimListed[country] as CountryName[]).slice(0, 5).map(closeCountry => (
+                {pick(discrimListed).map(closeCountry => (
                     <li>
                         <Country name={closeCountry} />
                         <span>(score: {(discrimScores[closeCountry][1] * 100).toFixed(2)}%)</span>
                     </li>
                 ))}
             </ol>
-            <h2>Closest countries by responses to public questions</h2>
+            <h2>{label} countries by responses to public questions</h2>
+            <span>
+                (<Country name={country} />
+                <span>Own score: {(publicScores[country][1] * 100).toFixed(2)}%</span>)
+            </span>
             <ol>
-                {(publicListed[country] as CountryName[]).slice(0, 5).map(closeCountry => (
+                {pick(publicListed).map(closeCountry => (
                     <li>
                         <Country name={closeCountry} />
                         <span>(score: {(publicScores[closeCountry][1] * 100).toFixed(2)}%)</span>
                     </li>
                 ))}
             </ol>
-            <h2>Closest countries by responses to rights questions</h2>
+            <h2>{label} countries by responses to rights questions</h2>
+            <span>
+                (<Country name={country} />
+                <span>Own score: {(rightsScores[country][1] * 100).toFixed(2)}%</span>)
+            </span>
             <ol>
-                {(rightsListed[country] as CountryName[]).slice(0, 5).map(closeCountry => (
+                {pick(rightsListed).map(closeCountry => (
                     <li>
                         <Country name={closeCountry} />
                         <span>(score: {(rightsScores[closeCountry][1] * 100).toFixed(2)}%)</span>
                     </li>
                 ))}
             </ol>
-            <h2>Closest countries by responses to safety questions</h2>
+            <h2>{label} countries by responses to safety questions</h2>
+            <span>
+                (<Country name={country} />
+                <span>Own score: {(safetyScores[country][1] * 100).toFixed(2)}%</span>)
+            </span>
             <ol>
-                {(safetyListed[country] as CountryName[]).slice(0, 5).map(closeCountry => (
+                {pick(safetyListed).map(closeCountry => (
                     <li>
                         <Country name={closeCountry} />
                         <span>(score: {(safetyScores[closeCountry][1] * 100).toFixed(2)}%)</span>
