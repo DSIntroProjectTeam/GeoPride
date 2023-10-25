@@ -88,7 +88,7 @@ function getData(topic: string) {
         case "discrimination":
             return ["Discrimination", discrimListed, discrimScores] as const;
         case "public":
-            return ["Public", publicListed, publicScores] as const;
+            return ["Public Prejudice", publicListed, publicScores] as const;
         case "rights":
             return ["Legal Rights", rightsListed, rightsScores] as const;
         case "safety":
