@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-import CountryListView from "./country-list";
+import CountryListView from "./country-list/CountryListView";
 import { CountryName } from "#/data/countries";
 import OpenedCountryView from "./opened-country";
 

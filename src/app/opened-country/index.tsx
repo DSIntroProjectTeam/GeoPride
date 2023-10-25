@@ -1,4 +1,7 @@
 import type { CountryName } from "#/data/countries";
+
+import clsx from "clsx";
+
 import Country from "#/components/country";
 
 import allListed from "#/data/vecs/all.listed.json";
@@ -11,8 +14,6 @@ import rightsListed from "#/data/vecs/rights.listed.json";
 import rightsScores from "#/data/scores/scores_rights.json";
 import safetyListed from "#/data/vecs/safety.listed.json";
 import safetyScores from "#/data/scores/scores_safety.json";
-import { useState } from "react";
-import clsx from "clsx";
 
 type props = {
     country: CountryName;
@@ -20,36 +21,28 @@ type props = {
 };
 
 export default function OpenedCountryView({ country, onClickBack }: props) {
-    const [isClosest, setIsClosest] = useState(true);
-
     return (
         <div className={clsx("flex flex-col items-center")}>
             <button onClick={onClickBack}>⬅ Back</button>
             <h1>Data for {country}</h1>
-            <p>
-                Reverse: <input type="checkbox" checked={!isClosest} onChange={() => setIsClosest(v => !v)} />
-            </p>
 
-            <ClosestFurthest from={country} topic="all" isClosest={isClosest} />
-            <ClosestFurthest from={country} topic="discrimination" isClosest={isClosest} />
-            <ClosestFurthest from={country} topic="public" isClosest={isClosest} />
-            <ClosestFurthest from={country} topic="rights" isClosest={isClosest} />
-            <ClosestFurthest from={country} topic="safety" isClosest={isClosest} />
+            <ClosestFurthest from={country} topic="all" />
+            <ClosestFurthest from={country} topic="discrimination" />
+            <ClosestFurthest from={country} topic="public" />
+            <ClosestFurthest from={country} topic="rights" />
+            <ClosestFurthest from={country} topic="safety" />
         </div>
     );
 }
 
-function ClosestFurthest({ from, topic, isClosest }: { from: CountryName; topic: string; isClosest: boolean }) {
+function ClosestFurthest({ from, topic }: { from: CountryName; topic: string }) {
     const [title, list, scores] = getData(topic);
 
-    const neighbours = list[from] as CountryName[];
-    const closestList = isClosest ? neighbours.slice(0, 5) : neighbours.slice(-6, -1).reverse();
-    const label = isClosest ? "Closest" : "Furthest";
-
-    const rawScore = (scores[from][1] + 1) / 2;
+    const neighbours = (list[from] as CountryName[]).slice(0, 5);
+    const rawScore = scores[from];
 
     function getScore(country: CountryName) {
-        return ((100 * (scores[country][1] + 1)) / 2).toFixed(2);
+        return (100 * scores[country]).toFixed(2);
     }
 
     return (
@@ -60,9 +53,11 @@ function ClosestFurthest({ from, topic, isClosest }: { from: CountryName; topic:
                     {getScore(from)}%
                 </span>
             </summary>
-            <span className={clsx("px-2", "text-xs text-neutral-400")}>{label} countries by survey responses</span>
+            <span className={clsx("px-2", "text-xs text-neutral-400")}>
+                Countries with the most similar survery responses to {from}
+            </span>
             <ol className={clsx("flex justify-center gap-1", "pb-2")}>
-                {closestList.map(country => (
+                {neighbours.map(country => (
                     <li
                         key={country}
                         className={clsx(
