@@ -1,6 +1,7 @@
 import Country from "#/components/country";
 import { COUNTRIES, CountryName } from "#/data/countries";
 import clsx from "clsx";
+import EuMap from "./eu-map";
 
 type props = {
     onSelectCountry: (country: CountryName) => void;
@@ -18,6 +19,7 @@ export default function CountryListView({ onSelectCountry }: props) {
                     </li>
                 ))}
             </ul>
+            <EuMap />
         </>
     );
 }

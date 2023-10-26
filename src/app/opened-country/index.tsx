@@ -18,24 +18,33 @@ import safetyScores from "#/data/scores/scores_safety.json";
 type props = {
     country: CountryName;
     onClickBack: () => void;
+    onSelectCountry: (country: CountryName) => void;
 };
 
-export default function OpenedCountryView({ country, onClickBack }: props) {
+export default function OpenedCountryView({ country, onClickBack, onSelectCountry }: props) {
     return (
         <div className={clsx("flex flex-col items-center")}>
             <button onClick={onClickBack}>⬅ Back</button>
             <h1>Data for {country}</h1>
 
-            <ClosestFurthest from={country} topic="all" />
-            <ClosestFurthest from={country} topic="discrimination" />
-            <ClosestFurthest from={country} topic="public" />
-            <ClosestFurthest from={country} topic="rights" />
-            <ClosestFurthest from={country} topic="safety" />
+            <ClosestFurthest from={country} onSelectCountry={onSelectCountry} topic="all" />
+            <ClosestFurthest from={country} onSelectCountry={onSelectCountry} topic="discrimination" />
+            <ClosestFurthest from={country} onSelectCountry={onSelectCountry} topic="public" />
+            <ClosestFurthest from={country} onSelectCountry={onSelectCountry} topic="rights" />
+            <ClosestFurthest from={country} onSelectCountry={onSelectCountry} topic="safety" />
         </div>
     );
 }
 
-function ClosestFurthest({ from, topic }: { from: CountryName; topic: string }) {
+function ClosestFurthest({
+    from,
+    topic,
+    onSelectCountry,
+}: {
+    from: CountryName;
+    topic: string;
+    onSelectCountry: (country: CountryName) => void;
+}) {
     const [title, list, scores] = getData(topic);
 
     const neighbours = (list[from] as CountryName[]).slice(0, 5);
@@ -58,17 +67,21 @@ function ClosestFurthest({ from, topic }: { from: CountryName; topic: string }) 
             </span>
             <ol className={clsx("flex justify-center gap-1", "pb-2")}>
                 {neighbours.map(country => (
-                    <li
-                        key={country}
-                        className={clsx(
-                            "flex flex-col items-center justify-center",
-                            "w-24 h-28",
-                            "border rounded-md",
-                            "bg-blue-50"
-                        )}
-                    >
-                        <Country name={country} xFlag={["text-6xl"]} xName={["text-xs uppercase"]} />
-                        <span>{getScore(country)}%</span>
+                    <li key={country}>
+                        <button
+                            onClick={() => onSelectCountry(country)}
+                            className={clsx(
+                                "flex flex-col items-center justify-center",
+                                "w-24 h-28",
+                                "rounded-md",
+                                "cursor-pointer",
+                                "bg-neutral-50 hover:bg-blue-50",
+                                "border hover:border-blue-200"
+                            )}
+                        >
+                            <Country name={country} xFlag={["text-6xl"]} xName={["text-xs uppercase"]} />
+                            <span>{getScore(country)}%</span>
+                        </button>
                     </li>
                 ))}
             </ol>

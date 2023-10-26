@@ -24,6 +24,12 @@ export default function App() {
         case "country-list":
             return <CountryListView onSelectCountry={onSelectCountry} />;
         case "opened-country":
-            return <OpenedCountryView onClickBack={onDeselectCountry} country={selectedCountry!} />;
+            return (
+                <OpenedCountryView
+                    onClickBack={onDeselectCountry}
+                    onSelectCountry={onSelectCountry}
+                    country={selectedCountry!}
+                />
+            );
     }
 }
