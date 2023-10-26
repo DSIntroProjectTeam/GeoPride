@@ -1,10 +1,14 @@
-import clsx from "clsx";
+import clsx, { ClassValue } from "clsx";
 import * as d3 from "d3";
 import { useEffect, useRef } from "react";
 import geoJson from "#/data/europe.json";
 import { COUNTRIES, CountryName } from "#/data/countries";
 
-export default function EuMap() {
+type props = {
+    x?: ClassValue[];
+};
+
+export default function EuMap({ x }: props) {
     const svgRef = useRef<any>(null);
 
     useEffect(function drawEuMap() {
@@ -74,12 +78,5 @@ export default function EuMap() {
         return () => window.removeEventListener("resize", doDraw);
     }, []);
 
-    return (
-        <svg
-            ref={svgRef}
-            className={clsx("border border-neutral-300", "absolute top-0 left-0")}
-            width="100%"
-            height="100%"
-        />
-    );
+    return <svg ref={svgRef} className={clsx("fixed top-0 left-0", x)} width="100%" height="100%" />;
 }
