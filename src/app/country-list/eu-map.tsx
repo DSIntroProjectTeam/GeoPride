@@ -3,6 +3,17 @@ import * as d3 from "d3";
 import { useEffect, useRef } from "react";
 import geoJson from "#/data/europe.json";
 import { COUNTRIES, CountryName } from "#/data/countries";
+import scoresAll from "#/data/scores/scores_all.json";
+import _ from "lodash";
+import mapColour from "#/data/colourmap";
+
+const min = _(scoresAll).values().min()!;
+const max = _(scoresAll).values().max()!;
+
+function getColour(input: number) {
+    const score = (input - min) / (max - min);
+    return mapColour(score);
+}
 
 type props = {
     x?: ClassValue[];
@@ -66,9 +77,11 @@ export default function EuMap({ x }: props) {
                 .append("path")
                 // @ts-ignore
                 .attr("d", d3.geoPath().projection(projection))
-                .attr("fill", data =>
-                    COUNTRIES.includes(data.properties.NAME as CountryName) ? "rgb(34 211 238)" : "#f5f5f5"
-                )
+                .attr("fill", data => {
+                    const countryName = data.properties.NAME;
+                    if (!COUNTRIES.includes(countryName as CountryName)) return "#f5f5f5";
+                    return getColour((scoresAll as any)[countryName]);
+                })
                 .style("stroke", "#fff");
         }
 
