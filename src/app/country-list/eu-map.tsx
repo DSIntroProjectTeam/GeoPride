@@ -1,9 +1,10 @@
 import clsx from "clsx";
 import * as d3 from "d3";
-import { useEffect, useLayoutEffect, useRef } from "react";
+import { useEffect, useRef } from "react";
 import geoJson from "#/data/europe.json";
 
 export default function EuMap() {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const svgRef = useRef<any>(null);
 
     useEffect(function drawEuMap() {
@@ -38,6 +39,8 @@ export default function EuMap() {
                 .enter()
                 .append("path")
                 .attr("fill", "#69b3a2")
+                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                // @ts-ignore
                 .attr("d", d3.geoPath().projection(projection))
                 .style("stroke", "#fff");
 
