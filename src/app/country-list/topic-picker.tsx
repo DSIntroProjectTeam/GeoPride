@@ -39,7 +39,9 @@ function TopicButton({
                 "rounded-full",
                 "px-4 py-1",
                 "transition-all",
-                active && "bg-white scale-110 shadow-sm ring-1 ring-neutral-300"
+                active && "hover:cursor-default",
+                active && "bg-white scale-110 shadow-sm ring-1 ring-neutral-300",
+                !active && "hover:bg-neutral-100"
             )}
         >
             {children}
