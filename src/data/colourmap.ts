@@ -8,7 +8,7 @@
 // Both accessed on 2023-10-26
 
 // prettier-ignore
-const COLOUR_MAP = [
+export const COLOUR_MAP = [
     [1,         "rgb(21 136 51)"],
     [0.96875,   "rgb(35 146 66)"],
     [0.9375,    "rgb(48 155 81)"],
