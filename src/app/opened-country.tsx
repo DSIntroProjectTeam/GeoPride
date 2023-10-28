@@ -1,8 +1,9 @@
-import { FLAGS, type CountryName } from "#/data/countries";
-
+import { useEffect, useRef } from "react";
 import clsx, { ClassValue } from "clsx";
 
-import Country from "#/components/country";
+import Country from "#/app/country";
+import { FLAGS, CountryName } from "#/data/countries";
+import { Topic } from ".";
 
 import allListed from "#/data/vecs/all.listed.json";
 import allScores from "#/data/scores/scores_all.json";
@@ -14,9 +15,6 @@ import rightsListed from "#/data/vecs/rights.listed.json";
 import rightsScores from "#/data/scores/scores_rights.json";
 import safetyListed from "#/data/vecs/safety.listed.json";
 import safetyScores from "#/data/scores/scores_safety.json";
-import { useEffect, useRef, useState } from "react";
-import { Topic } from ".";
-import _ from "lodash";
 
 type props = {
     country: CountryName | null;

@@ -1,5 +1,5 @@
-import clsx, { ClassValue } from "clsx";
 import { PropsWithChildren } from "react";
+import clsx, { ClassValue } from "clsx";
 
 type props = {
     onClose: () => void;

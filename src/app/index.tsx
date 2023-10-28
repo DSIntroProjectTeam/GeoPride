@@ -1,7 +1,8 @@
 import { useState } from "react";
 
-import CountryListView from "./country-list";
 import { CountryName } from "#/data/countries";
+
+import CountryListView from "./country-list";
 import OpenedCountryView from "./opened-country";
 import EuMap from "./eu-map";
 import TopicPicker from "./topic-picker";

@@ -1,11 +1,12 @@
+import { useEffect, useRef } from "react";
 import clsx, { ClassValue } from "clsx";
 import * as d3 from "d3";
-import { useEffect, useRef } from "react";
-import geoJson from "#/data/europe.json";
-import { COUNTRIES, CountryName } from "#/data/countries";
 import _ from "lodash";
-import mapColour from "#/data/colourmap";
+
+import { COUNTRIES, CountryName } from "#/data/countries";
 import { Topic } from "#/app";
+import mapColour from "#/data/colourmap";
+import geoJson from "#/data/europe.json";
 
 import scoresAll from "#/data/scores/scores_all.json";
 import scoresDiscrim from "#/data/scores/scores_discrimination.json";
@@ -115,6 +116,7 @@ export default function EuMap({ activeTopic, x }: props) {
 
             return () => window.removeEventListener("resize", doDraw);
         },
+        // eslint-disable-next-line react-hooks/exhaustive-deps
         [activeTopic]
     );
 

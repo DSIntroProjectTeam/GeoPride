@@ -1,6 +1,7 @@
-import Country from "#/components/country";
-import { COUNTRIES, CountryName } from "#/data/countries";
 import clsx, { ClassValue } from "clsx";
+
+import { COUNTRIES, CountryName } from "#/data/countries";
+import Country from "#/app/country";
 
 type props = {
     onSelect: (country: CountryName) => void;

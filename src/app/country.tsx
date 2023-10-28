@@ -1,5 +1,6 @@
-import { FLAGS } from "#/data/countries";
 import clsx, { ClassValue } from "clsx";
+
+import { FLAGS } from "#/data/countries";
 
 export default function Country({
     name,
