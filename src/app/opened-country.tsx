@@ -58,9 +58,9 @@ export default function OpenedCountryView({ country, onChange, topic, x }: props
             <ClosestFurthest
                 from={countryToShow}
                 onChange={onChange}
-                open={topic === "discrim"}
-                topic="discrimination"
-                dir="lo"
+                open={topic === "safety"}
+                topic="safety"
+                dir="hi"
             />
             <ClosestFurthest
                 from={countryToShow}
@@ -72,15 +72,15 @@ export default function OpenedCountryView({ country, onChange, topic, x }: props
             <ClosestFurthest
                 from={countryToShow}
                 onChange={onChange}
-                open={topic === "rights"}
-                topic="rights"
-                dir="hi"
+                open={topic === "discrim"}
+                topic="discrimination"
+                dir="lo"
             />
             <ClosestFurthest
                 from={countryToShow}
                 onChange={onChange}
-                open={topic === "safety"}
-                topic="safety"
+                open={topic === "rights"}
+                topic="rights"
                 dir="hi"
             />
         </div>
