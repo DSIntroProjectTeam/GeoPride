@@ -99,6 +99,16 @@ export default function AboutText({ onClose, x }: props) {
                             https://www.kaggle.com/datasets/maddalenamariano/rainbow-europe-lgbtq-rights
                         </a>
                     </li>
+                    <li className={clsx("not-prose", "leading-5", "mb-2")}>
+                        <div>Map of Europe, @leakymirror (GitHub)</div>
+                        <div className="text-xs pt-1">Accessed 2023-10-26</div>
+                        <a
+                            className="text-sm text-blue-500 visited:text-purple-800"
+                            href="https://github.com/leakyMirror/map-of-europe/tree/master"
+                        >
+                            https://github.com/leakyMirror/map-of-europe/tree/master
+                        </a>
+                    </li>
                 </ul>
             </Section>
         </div>
