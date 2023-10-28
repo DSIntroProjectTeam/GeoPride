@@ -5,7 +5,7 @@ import geoJson from "#/data/europe.json";
 import { COUNTRIES, CountryName } from "#/data/countries";
 import _ from "lodash";
 import mapColour from "#/data/colourmap";
-import { Topic } from ".";
+import { Topic } from "#/app";
 
 import scoresAll from "#/data/scores/scores_all.json";
 import scoresDiscrim from "#/data/scores/scores_discrimination.json";
