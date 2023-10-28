@@ -41,13 +41,14 @@ export default function AboutText({ onClose, x }: props) {
                 GeoPride is based on three survey datasets focusing on attitudes, perceptions, and experiences of
                 discrimination based on sexual orientation or being transgender or intersex, and one dataset covering
                 the legislation and policies related to the LGBTI rights in Europe. After selecting the relevant
-                questions from the data, all answer options were scored from -2 to 2. Responses indicating a problematic
-                situation gave negative points, and responses indicating a good situation gave positive points. Laws and
-                policies supporting the LGBTI rights were scored, too, depending on how widely they were applied in each
-                country. Finally, the countries' scores were calculated as a weighted sum where the points for the
-                responses were multiplied by the corresponding percentage of respondents. For finding the closest
-                matches, the question scores were vectorized and the distance between countries calculated as the
-                Euclidean distance.
+                questions from the data, all answer options were scored from -2 to 2 to have a unified scale for future
+                comparison. Responses indicating a problematic situation gave negative points, and responses indicating
+                a good situation gave positive points. Laws and policies supporting the LGBTI rights were scored, too,
+                depending on how widely they were applied in each country. For ranking countries, we calculated their
+                total points as the sum of points for each question, which were a product of answer, percentage,
+                question weight and relevance. Finally, we constructed countries' scores as percentage of scored points
+                from the max possible. For finding the closest matches, the question scores were vectorized and the
+                distance between countries calculated as the Euclidean distance.
             </Section>
             <Section title="Who made GeoPride?">
                 GeoPride was made by students from the University of Helsinki for the course{" "}
